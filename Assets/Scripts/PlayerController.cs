@@ -9,8 +9,10 @@ public class PlayerController : MonoBehaviour
     public Text countText;
     public Text winText;
 
+    public Vector3 lastVelocity = Vector3.zero;
     private Rigidbody rb;
     private int count;
+    private int winCount;
 
     void Start()
     {
@@ -18,6 +20,7 @@ public class PlayerController : MonoBehaviour
         count = 0;
         SetCountText();
         winText.text = "";
+        winCount = GameObject.FindGameObjectsWithTag("Pick Up").Length;
     }
 
     void FixedUpdate()
@@ -28,6 +31,7 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         rb.AddForce(movement * speed);
+        lastVelocity = rb.velocity;
     }
 
     void OnTriggerEnter(Collider other)
@@ -43,7 +47,7 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if (count >= 12)
+        if (count >= winCount)
         {
             winText.text = "You Win!";
         }
